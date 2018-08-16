@@ -64,4 +64,18 @@ class String
 
         return false;
     }
+
+
+    public static function randomString($num = 32, $set = null)
+    {
+        if (!$set) {
+            $set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        $len = strlen($set);
+        $r = [];
+        for ($i = 0; $i < $num; $i++) {
+            $r[] = substr($set, mt_rand(0, $len - 1), 1);
+        }
+        return implode('', $r);
+    }
 }
