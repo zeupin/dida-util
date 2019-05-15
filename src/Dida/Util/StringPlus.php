@@ -9,9 +9,11 @@
 
 namespace Dida\Util;
 
-class String
+
+class StringPlus
 {
-    const VERSION = '20171115';
+
+    const VERSION = '20190515';
 
 
     public static function matchPrefix($str, $prefixes)
@@ -29,7 +31,8 @@ class String
             foreach ($prefixes as $prefix) {
                 if (is_string($prefix)) {
                     $len = mb_strlen($prefix);
-                    if (mb_substr($str, 0, $len) === $prefix) return true;
+                    if (mb_substr($str, 0, $len) === $prefix)
+                        return true;
                 }
             }
             return false;
