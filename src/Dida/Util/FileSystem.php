@@ -11,8 +11,34 @@ namespace Dida\Util;
 
 class FileSystem
 {
-    const VERSION = '20171115';
+    const VERSION = '20200530';
 
+    public static function delDir($dir)
+    {
+        if (!is_dir($dir)) {
+            return false;
+        }
+
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $path = $dir . DIRECTORY_SEPARATOR . $file ;
+
+            if (is_dir($path)) {
+                $result = self::delDir($path);
+            } else {
+                $result = unlink($path);
+            }
+            if ($result === false) {
+                return false;
+            }
+        }
+
+        return rmdir($dir);
+    }
 
     public static function getFiles($dir, $extensions = null, $ignores = null)
     {
@@ -21,7 +47,6 @@ class FileSystem
         }
 
         if ($ignores === null) {
-
         } elseif (is_string($ignores)) {
             $ignores = explode(',', $ignores);
             foreach ($ignores as $key => $item) {
@@ -36,7 +61,6 @@ class FileSystem
         }
 
         if ($extensions === null) {
-
         } elseif (is_string($extensions)) {
             $extensions = explode(',', $extensions);
             foreach ($extensions as $key => $item) {
@@ -97,7 +121,9 @@ class FileSystem
                 $todo = array_merge($subfolders, $todo);
             }
 
-            if (!$todo) break;
+            if (!$todo) {
+                break;
+            }
         }
 
         return $ret;
